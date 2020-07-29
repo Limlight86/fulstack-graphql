@@ -5,8 +5,11 @@
 
 module.exports = {
   Query: {
-    pets(_, __, context){
-      return context.models.Pet.findMany()
+    pets(_, {input}, context){
+      return context.models.Pet.findMany(input)
+    },
+    pet(_, {input}, context){
+      return context.models.Pet.findOne(input)
     }
   },
   // Mutation: {
