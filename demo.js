@@ -1,6 +1,11 @@
 const gql = require("graphql-tag")
 const { ApolloServer } = require("apollo-server")
 
+let email = "laz"
+let avatar = "avatar"
+let friends = [{email: 'laz@whatever.com', avatar: "http://yoda.png", friends: []},
+                {email: 'notlaz@whatever.com', avatar: "http://yoda.png", friends: []}]
+
 const typeDefs = gql`
   type User {
     email: String!
@@ -10,6 +15,7 @@ const typeDefs = gql`
 
   type Query{
     me: User!
+    you: User!
   }
 `
 
@@ -21,6 +27,14 @@ const resolvers = {
           avatar: "http://yoda.png",
           friends: []
         }
+      },
+      you(){
+        return{
+          email,
+          avatar,
+          friends: friends
+        }
+        
       }
     }
 }
