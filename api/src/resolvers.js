@@ -12,9 +12,11 @@ module.exports = {
       return context.models.Pet.findOne(input)
     }
   },
-  // Mutation: {
-    
-  // },
+  Mutation: {
+    newPet(_, {input}, context){
+      return context.models.Pet.create(input)
+    }
+  },
   // Pet: {
   //   img(pet) {
   //     return pet.type === 'DOG'

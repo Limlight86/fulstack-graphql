@@ -15,6 +15,12 @@
       "createdAt": "4567",
       "name": "Autumn",
       "type": "Dog"
+    },
+    {
+      "id": "1l4mefw-yH2MYaDN3a963",
+      "createdAt": 1596165927968,
+      "name": "Gato",
+      "type": "Cat"
     }
   ]
 }
