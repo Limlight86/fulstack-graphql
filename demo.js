@@ -7,6 +7,12 @@ let friends = [{email: 'laz@whatever.com', avatar: "http://yoda.png", friends: [
                 {email: 'notlaz@whatever.com', avatar: "http://yoda.png", friends: []}]
 
 const typeDefs = gql`
+  enum ShoeType{
+    nike
+    adidas
+    converse
+  }
+
   type User {
     email: String!
     avatar: String!
@@ -14,12 +20,12 @@ const typeDefs = gql`
   }
 
   type Shoe{
-    brand: String!
+    brand: ShoeType!
     size: Int!
   }
 
   input ShoesInput{
-    brand: String
+    brand: ShoeType
     size: Int
   }
 
@@ -30,7 +36,7 @@ const typeDefs = gql`
   }
 
   input NewShoeInput{
-    brand: String!
+    brand: ShoeType!
     size: Int!
   }
 
