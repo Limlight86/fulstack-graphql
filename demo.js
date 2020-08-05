@@ -7,6 +7,7 @@ let friends = [{email: 'laz@whatever.com', avatar: "http://yoda.png", friends: [
                 {email: 'notlaz@whatever.com', avatar: "http://yoda.png", friends: []}]
 
 const typeDefs = gql`
+
   enum ShoeType{
     nike
     adidas
@@ -17,23 +18,27 @@ const typeDefs = gql`
     email: String!
     avatar: String!
     friends: [User]!
+    shoes: [Shoe!]
   }
 
   interface Shoe{
     brand: ShoeType!
     size: Int!
+    user: User!
   }
 
   type Sneaker implements Shoe{
     brand: ShoeType!
     size: Int!
     sport: String!
+    user: User!
   }
 
   type Boot implements Shoe{
     brand: ShoeType!
     size: Int!
     hasGrip: Boolean!
+    user: User!
   }
 
   input ShoesInput{
@@ -57,14 +62,17 @@ const typeDefs = gql`
   }
 `
 
-const resolvers = {
-    Query:{
-      me(){
-        return{
+const user = {
+          id:1,
           email: 'laz@whatever.com',
           avatar: "http://yoda.png",
           friends: []
-        }
+}
+
+const resolvers = {
+    Query:{
+      me(){
+        return user
       },
       you(){
         return{
@@ -90,11 +98,26 @@ const resolvers = {
         return input
       }
     },
+    User:{
+      shoes(user){
+        return [{brand:"nike"}]
+      }
+    },
     Shoe:{
       __resolveType(shoe){
         if (shoe.sport) return "Sneaker"
         return "Boot"
       }
+    },
+    Sneaker:{
+      user(shoe){
+        return user
+      }
+    },
+    Boot:{
+      user(shoe){
+        return user
+    }
     }
   }
 
