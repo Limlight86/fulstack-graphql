@@ -7,13 +7,15 @@ const typeDefs = gql`
   type User {
     id: ID!
     username: String!
+    pets: [Pet]!
   }
 
   type Pet {
     id: ID!,
-    createdAt: String!,
-    name: String!,
+    createdAt: String!
+    name: String!
     type: String!
+    owner: User!
   }
   
   input PetInput{
@@ -21,9 +23,15 @@ const typeDefs = gql`
     type: String
   }
 
+  input UserInput{
+    username: String
+    id: String
+  }
+
   type Query{
     pets(input: PetInput): [Pet]!
     pet(input: PetInput): Pet
+    user(input: UserInput): User
   }
 
   input newPetInput{
