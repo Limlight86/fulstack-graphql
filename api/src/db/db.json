@@ -3,10 +3,13 @@
     "id": "jBWMVGjm50l6LGwepDoty",
     "username": "frontendmaster"
   },
-  "pet": [{
-    "id": 1,
-    "type": "DOG",
-    "name": "Autumn",
-    "createdAt": "Now"
-  }]
+  "pet": [
+    {
+      "id": "wUezztU9owtQIYANFmuzm",
+      "createdAt": 1597374041376,
+      "name": "Autumn",
+      "type": "DOG",
+      "user": "jBWMVGjm50l6LGwepDoty"
+    }
+  ]
 }
