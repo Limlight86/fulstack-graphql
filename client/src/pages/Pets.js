@@ -1,54 +1,62 @@
-import React, {useState} from 'react'
-import gql from 'graphql-tag'
-import { useQuery, useMutation } from '@apollo/react-hooks'
-import PetsList from '../components/PetsList'
-import NewPetModal from '../components/NewPetModal'
-import Loader from '../components/Loader'
+import React, { useState } from "react";
+import gql from "graphql-tag";
+import { useQuery, useMutation } from "@apollo/react-hooks";
+import PetsList from "../components/PetsList";
+import NewPetModal from "../components/NewPetModal";
+import Loader from "../components/Loader";
 
 const ALL_PETS = gql`
-  query AllPets{
-    pets{
+  query AllPets {
+    pets {
       id
       type
       name
       img
     }
   }
-`
+`;
 const NEW_PET = gql`
-  mutation CreatePet($newPet: NewPetInput!){
+  mutation CreatePet($newPet: NewPetInput!) {
     addPet(input: $newPet) {
-     id
-     name
-     type
-     img
+      id
+      name
+      type
+      img
     }
   }
-`
+`;
 
-export default function Pets () {
-  const [modal, setModal] = useState(false)
-  const {data, loading, error} = useQuery(ALL_PETS)
-  const [createPet, newPet] = useMutation(NEW_PET)
+export default function Pets() {
+  const [modal, setModal] = useState(false);
+  const { data, loading, error } = useQuery(ALL_PETS);
+  const [createPet, newPet] = useMutation(NEW_PET, {
+    update(cache, {data: {addPet}}) {
+      const { pets } = cache.readQuery({ query: ALL_PETS });
+      cache.writeQuery({
+        query: ALL_PETS,
+        data: { pets: [addPet, ...pets] },
+      });
+    },
+  });
 
-  const onSubmit = input => {
-    console.log(input)
+  const onSubmit = (input) => {
+    console.log(input);
     createPet({
-      variables:{newPet: input}
-    })
-    setModal(false)
+      variables: { newPet: input },
+    });
+    setModal(false);
+  };
+
+  if (loading || newPet.loading) {
+    return <Loader />;
   }
 
-  if (loading || newPet.loading){
-    return <Loader/>
+  if (error || newPet.error) {
+    console.log(newPet.error);
   }
 
-  if (error || newPet.error){
-    console.log(newPet.error)
-  }
-  
   if (modal) {
-    return <NewPetModal onSubmit={onSubmit} onCancel={() => setModal(false)} />
+    return <NewPetModal onSubmit={onSubmit} onCancel={() => setModal(false)} />;
   }
 
   return (
@@ -65,8 +73,8 @@ export default function Pets () {
         </div>
       </section>
       <section>
-        <PetsList pets={data.pets}/>
+        <PetsList pets={data.pets} />
       </section>
     </div>
-  )
+  );
 }
